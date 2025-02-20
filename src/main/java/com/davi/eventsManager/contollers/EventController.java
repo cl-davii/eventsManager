@@ -3,7 +3,6 @@ package com.davi.eventsManager.contollers;
 import com.davi.eventsManager.entities.Event;
 import com.davi.eventsManager.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
