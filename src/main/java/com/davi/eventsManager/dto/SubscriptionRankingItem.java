@@ -1,4 +1,3 @@
 package com.davi.eventsManager.dto;
 
-public class SubscriptionRankingItem {
-}
+public record SubscriptionRankingItem(Long subscriber, Integer userId, String name) {}
