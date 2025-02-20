@@ -1,5 +1,7 @@
 package com.davi.eventsManager.services;
 
+import com.davi.eventsManager.dto.SubscriptionRankingByUser;
+import com.davi.eventsManager.dto.SubscriptionRankingItem;
 import com.davi.eventsManager.dto.SubscriptionResponse;
 import com.davi.eventsManager.entities.Event;
 import com.davi.eventsManager.entities.Subscription;
@@ -12,6 +14,9 @@ import com.davi.eventsManager.repositories.SubscriptionRepository;
 import com.davi.eventsManager.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.IntStream;
 
 @Service
 public class SubscriptionService {
@@ -55,5 +60,24 @@ public class SubscriptionService {
             throw new SubscriptionConflict("The user " + userData.getName() + " already is registered in event " + event.getTitle() + ".");
         }
         Subscription saveSubscription = subscriptionRepository.save(subscription);
-        return new SubscriptionResponse(saveSubscription.getSubscriptionNumber(), "http://www.codecraft.com/subscription/" + saveSubscription.getEvent().getPrettyName() + "/" + saveSubscription.getSubscriber().getUserId());}
+        return new SubscriptionResponse(saveSubscription.getSubscriptionNumber(), "http://www.codecraft.com/subscription/" + saveSubscription.getEvent().getPrettyName() + "/" + saveSubscription.getSubscriber().getUserId());
+    }
+
+    public List<SubscriptionRankingItem> getCompleteRanking(String prettyName) {
+        Event event = eventRepository.findByPrettyName(prettyName);
+        if (event == null) {
+            throw new EventNotFound("The ranking of " + prettyName + " event does not exist.");
+        }
+        return subscriptionRepository.generateRanking(event.getEventId());
+    }
+
+    public SubscriptionRankingByUser getRankingByUser(String prettyName, Integer userId) {
+        List<SubscriptionRankingItem> ranking = getCompleteRanking(prettyName);
+        SubscriptionRankingItem item = ranking.stream().filter(x -> x.userId().equals(userId)).findFirst().orElse(null);
+        if (item == null) {
+            throw new UserIndicatorNotFound("There are no subscriptions indicated by user " + userId + ".");
+        }
+        int position = IntStream.range(0, ranking.size()).filter(index -> ranking.get(index).userId().equals(userId)).findFirst().getAsInt();
+        return new SubscriptionRankingByUser(item, position + 1);
+    }
 }
