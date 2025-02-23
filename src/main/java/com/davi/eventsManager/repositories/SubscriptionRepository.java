@@ -4,13 +4,13 @@ import com.davi.eventsManager.dto.SubscriptionRankingItem;
 import com.davi.eventsManager.entities.Event;
 import com.davi.eventsManager.entities.Subscription;
 import com.davi.eventsManager.entities.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface SubscriptionRepository extends CrudRepository<Subscription, Integer> {
+public interface SubscriptionRepository extends JpaRepository<Subscription, Integer> {
 
     Subscription findByEventAndSubscriber(Event event, User subscriber);
 
