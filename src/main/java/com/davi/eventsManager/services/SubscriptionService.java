@@ -14,6 +14,7 @@ import com.davi.eventsManager.repositories.SubscriptionRepository;
 import com.davi.eventsManager.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -80,4 +81,13 @@ public class SubscriptionService {
         int position = IntStream.range(0, ranking.size()).filter(index -> ranking.get(index).userId().equals(userId)).findFirst().getAsInt();
         return new SubscriptionRankingByUser(item, position + 1);
     }
+
+    public List<Subscription> getAllSubscriptions() {
+        return subscriptionRepository.findAll();
+    }
+
+    public void deleteUserFromEvent(@PathVariable String prettyName, @PathVariable Integer userId) {
+        var item = subscriptionRepository.findAll().stream().filter(x -> x.getEvent().getPrettyName().equals(prettyName) && x.getSubscriber().getUserId().equals(userId)).toList();
+        subscriptionRepository.deleteAll(item);
+        }
 }
