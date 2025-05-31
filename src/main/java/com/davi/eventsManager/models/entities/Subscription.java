@@ -1,4 +1,4 @@
-package com.davi.eventsManager.entities;
+package com.davi.eventsManager.models.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,9 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Table(name = "subscriptions")
 public class Subscription {
 

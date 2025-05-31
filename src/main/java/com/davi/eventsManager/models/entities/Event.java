@@ -1,4 +1,4 @@
-package com.davi.eventsManager.entities;
+package com.davi.eventsManager.models.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,24 +9,24 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "event")
+@AllArgsConstructor
+@Data
+@Table(name = "events")
 public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id")
-    private Integer eventId;
+    private Integer id;
 
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "pretty_name", nullable = false, unique = true, length = 50)
-    private String prettyName;
+    @Column(name = "nickname", nullable = false, unique = true, length = 50)
+    private String nickname;
 
-    @Column(name = "localtion", nullable = false)
+    @Column(name = "location", nullable = false)
     private String location;
 
     @Column(name = "price", nullable = false)
@@ -43,5 +43,5 @@ public class Event {
 
     @Column(name = "end_time")
     private LocalTime endTime;
-
 }
+
